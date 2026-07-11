@@ -4,11 +4,11 @@ COPY build_files /
 COPY system_files /system_files
 
 # Base Image
-FROM ghcr.io/ublue-os/bluefin-ds:44
+FROM ghcr.io/ublue-os/bluefin-dx:44
 
 ### akmods nvidia-lts the kernel should main-44 from fedora.
 ### this snippet is taken directly from ublue-os/akmods.
-COPY --from=ghcr.io/ublue-os/akmods-nvidia:main-44 / /tmp/akmods-nvidia
+COPY --from=ghcr.io/ublue-os/akmods-nvidia-lts:main-44 / /tmp/akmods-nvidia
 RUN find /tmp/akmods-nvidia
 ## optionally install remove old and install new kernel
 # dnf -y remove --no-autoremove kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra

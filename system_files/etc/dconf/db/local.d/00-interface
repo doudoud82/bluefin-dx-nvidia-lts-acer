@@ -1,0 +1,17 @@
+[org/gnome/desktop/interface]
+accent-color='blue'
+clock-format='24h'
+clock-show-weekday='true'
+color-scheme='prefer-dark'
+cursor-theme='Bibata-Modern-Ice'
+document-font-name='Noto Sans 11'
+enable-hot-corners=false
+font-name='Inter 11'
+gtk-theme='adw-gtk3-dark'
+icon-theme='Papirus-Dark'
+monospace-font-name='JetBrains Mono 10'
+show-battery-percentage=true
+
+[org/gnome/desktop/wm/preferences]
+button-layout='icon,menu:minimize,maximize,close'
+titlebar-font='Inter Bold 10'

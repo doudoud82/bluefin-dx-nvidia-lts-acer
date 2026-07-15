@@ -1,0 +1,21 @@
+
+[org/gnome/settings-daemon/plugins/media-keys]
+custom-keybindings=['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom20/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom21/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom22/']
+
+
+[org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom22]
+binding='<Alt>n'
+command='variety -n'
+name='variety next'
+
+
+[org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom21]
+binding='<Alt>p'
+command='variety -p'
+name='variety previous'
+
+
+[org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom20]
+binding='<Super>f'
+command='nautilus'
+name='nautilus'

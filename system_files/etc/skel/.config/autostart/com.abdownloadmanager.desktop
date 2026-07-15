@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=AB Download Manager
+Exec="/var/home/doudou/.local/ABDownloadManager/bin/ABDownloadManager" --background
+Icon=/var/home/doudou/.local/ABDownloadManager/lib/ABDownloadManager.png
+Terminal=false
+NoDisplay=true

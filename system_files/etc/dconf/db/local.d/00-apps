@@ -1,0 +1,157 @@
+[org/gnome/shell]
+favorite-apps=['org.gnome.Nautilus.desktop', 'com.brave.Browser.desktop', 'org.gnome.Ptyxis.desktop', 'code.desktop']
+
+[org/gnome/desktop/app-folders]
+folder-children=[
+  'Games',
+  'GamingUtilities',
+  'Utilities',
+  'Development',
+  'Office',
+  'Internet',
+  'Graphics',
+  'SoundVideo',
+  'Accessories'
+]
+
+[org/gnome/desktop/app-folders/folders/Office]
+name='Office'
+apps=[
+  'org.libreoffice.LibreOffice.desktop',
+  'org.gnome.Papers.desktop',
+  'org.libreoffice.LibreOffice.base.desktop',
+  'org.libreoffice.LibreOffice.calc.desktop',
+  'org.libreoffice.LibreOffice.draw.desktop',
+  'org.libreoffice.LibreOffice.impress.desktop',
+  'org.libreoffice.LibreOffice.math.desktop',
+  'org.libreoffice.LibreOffice.writer.desktop',
+  'vuescan.desktop'
+]
+
+[org/gnome/desktop/app-folders/folders/Internet]
+name='Internet'
+apps=[
+  'com.brave.Browser.desktop',
+  'com.abdownloadmanager.desktop',
+  'com.google.Chrome.desktop',
+  'org.mozilla.firefox.desktop',
+  'eu.betterbird.Betterbird.desktop',
+  'com.protonvpn.www.desktop',
+  'org.gnome.Connections.desktop',
+  'org.remmina.Remmina.desktop',
+  'io.github.martchus.syncthingtray.desktop'
+]
+
+[org/gnome/desktop/app-folders/folders/Graphics]
+name='Graphics'
+apps=[
+  'be.alexandervanhee.gradia.desktop',
+  'org.gimp.GIMP.desktop',
+  'com.github.PintaProject.Pinta.desktop',
+  'org.gnome.Loupe.desktop'
+]
+
+[org/gnome/desktop/app-folders/folders/SoundVideo]
+name='Sound & Video'
+apps=[
+  'io.mpv.Mpv.desktop',
+  'com.obsproject.Studio.desktop',
+  'org.gnome.Decibels.desktop'
+]
+
+[org/gnome/desktop/app-folders/folders/Accessories]
+name='Accessories'
+translate=false
+apps=[
+  'com.github.tchx84.Flatseal.desktop',
+  'org.gnome.FileRoller.desktop',
+  'io.github.flattool.Ignition.desktop',
+  'org.gnome.baobab.desktop',
+  'org.gnome.TextEditor.desktop',
+  'io.missioncenter.MissionCenter.desktop',
+  'page.tesk.Refine.desktop',
+  'com.mattjakeman.ExtensionManager.desktop',
+  'it.mijorus.smile.desktop',
+  'io.github.getnf.embellish.desktop',
+  'org.gnome.font-viewer.desktop',
+  'org.gnome.Tour.desktop'
+]
+
+[org/gnome/desktop/app-folders/folders/Development]
+name='Development'
+translate=false
+categories=['Development', 'IDE']
+excluded-apps=['org.gnome.Sysprof.desktop']
+apps=[
+  'cursor.desktop',
+  'code.desktop',
+  'antigravity-ide.desktop',
+  'jetbrains-toolbox.desktop',
+  'org.gnome.meld.desktop',
+  'virt-manager.desktop',
+  'io.podman_desktop.PodmanDesktop.desktop',
+  'com.github.marhkb.Pods.desktop',
+  'io.github.dvlv.boxbuddyrs.desktop',
+  'me.iepure.devtoolbox.desktop',
+  'com.ranfdev.DistroShelf.desktop',
+  'de.leopoldluley.Clapgrep.desktop'
+]
+
+[org/gnome/desktop/app-folders/folders/Games]
+name='Games'
+translate=false
+categories=['Game']
+excluded-apps=[
+  'steam.desktop',
+  'net.lutris.Lutris.desktop',
+  'io.github.benjamimgois.goverlay.desktop',
+  'com.vysp3r.ProtonPlus.desktop',
+  'io.github.fastrizwaan.WineZGUI.desktop'
+]
+
+[org/gnome/desktop/app-folders/folders/GamingUtilities]
+name='Gaming Utilities'
+translate=false
+apps=[
+  'protontricks.desktop',
+  'discover_overlay_configure.desktop',
+  'com.vysp3r.ProtonPlus.desktop',
+  'io.github.benjamimgois.goverlay.desktop',
+  'com.gerbilsoft.rom-properties.rp-config.desktop',
+  'steamos-nested-desktop.desktop'
+]
+
+[org/gnome/desktop/app-folders/folders/Utilities]
+name='System Utilities'
+translate=false
+categories=['X-GNOME-Utilities']
+excluded-apps=[
+  'it.mijorus.smile.desktop',
+  'org.gnome.baobab.desktop',
+  'io.missioncenter.MissionCenter.desktop',
+  'com.mattjakeman.ExtensionManager.desktop',
+  'com.github.tchx84.Flatseal.desktop',
+  'io.github.flattool.Ignition.desktop',
+  'page.tesk.Refine.desktop',
+  'org.gnome.FileRoller.desktop',
+  'io.github.getnf.embellish.desktop',
+  'org.gnome.font-viewer.desktop',
+  'winetricks.desktop'
+]
+apps=[
+  'nvidia-settings.desktop',
+  'io.github.flattool.Warehouse.desktop',
+  'org.gnome.tweaks.desktop',
+  'firewall-config.desktop',
+  'ca.desrt.dconf-editor.desktop',
+  'input-remapper-gtk.desktop',
+  'org.gnome.Logs.desktop',
+  'org.gnome.Sysprof.desktop',
+  'remote-viewer.desktop',
+  'org.gnome.DiskUtility.desktop',
+  'org.freedesktop.MalcontentControl.desktop',
+  'org.gnome.Firmware.desktop',
+  'discourse.desktop',
+  'documentation.desktop',
+  'system-update.desktop'
+]

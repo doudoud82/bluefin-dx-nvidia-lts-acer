@@ -1,0 +1,5 @@
+tap "colindean/fonts-nonfree"
+cask "font-jetbrains-mono-nerd-font"
+cask "font-jetbrains-mono"
+cask "font-inter"
+cask "font-microsoft-office"

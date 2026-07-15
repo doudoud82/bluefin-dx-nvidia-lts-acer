@@ -1,0 +1,11 @@
+[org/gnome/desktop/peripherals/keyboard]
+numlock-state=true
+
+[org/gnome/desktop/peripherals/mouse]
+accel-profile='default'
+drag-threshold=8
+
+[org/gnome/desktop/peripherals/touchpad]
+natural-scroll=true
+tap-to-click=true
+two-finger-scrolling-enabled=true

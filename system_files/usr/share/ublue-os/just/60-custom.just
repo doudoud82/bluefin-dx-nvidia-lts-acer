@@ -12,16 +12,14 @@ install-fonts:
 
 [group("System")]
 [no-exit-message]
-install-flatpaks:
+install-system-applications:
     brew trust amir1376/tap
     brew bundle --file=/usr/share/ublue-os/homebrew/system-flatpaks.Brewfile
 
 [group("System")]
 [no-exit-message]
-install-dx-flatpaks:
+install-system-dx-applications:
     brew trust ublue-os/tap
-    # Cursor Icons
-    wget "https://uxwing.com/wp-admin/admin-ajax.php?action=resize_image&size=128x128&file=cursor-ai-code-icon.png&category_slug=brands-and-social-media" -O "~/.local/share/icons/cursor.png"
     brew bundle --file=/usr/share/ublue-os/homebrew/system-dx-flatpaks.Brewfile
 
 [group("System")]
@@ -33,14 +31,16 @@ post-install:
         --header "Select what to install" \
         "CLI tools" \
         "Fonts" \
-        "System Flatpaks" \
-        "DX Flatpaks" \
+        "System DX Applications" \
         "DX Groups")
     grep -qx "CLI tools" <<<"$choices" && ujust install-cli
     grep -qx "Fonts" <<<"$choices" && ujust install-fonts
-    grep -qx "System Flatpaks" <<<"$choices" && ujust install-flatpaks
-    grep -qx "DX Flatpaks" <<<"$choices" && ujust install-dx-flatpaks
+    grep -qx "System DX Applications" <<<"$choices" && ujust install-system-dx-applications
     grep -qx "DX Groups" <<<"$choices" && ujust dx-group
+
+[group("System")]
+post-install-auto:
+    @ujust install-system-applications
 
 [group("System")]
 [no-exit-message]
@@ -70,6 +70,6 @@ install-lbp6020:
         -p LBP6020 \
         -o /dev/usb/LBP6020
 
-    systemctl enable --now ccpd.service
+    systemctl enable --now ccpd.service >/dev/null
 
     echo "Canon LBP6020 configured successfully."

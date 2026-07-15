@@ -1,0 +1,14 @@
+[Unit]
+Description=Install default system Flatpaks
+After=brew-setup.service network-online.target
+Wants=network-online.target
+Requires=brew-setup.service
+ConditionPathExists=/var/home/linuxbrew/.linuxbrew
+ConditionPathExists=!/var/lib/post-install-auto.done
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/bash -c 'ujust post-install-auto && mkdir -p /var/lib && touch /var/lib/post-install-auto.done'
+
+[Install]
+WantedBy=multi-user.target

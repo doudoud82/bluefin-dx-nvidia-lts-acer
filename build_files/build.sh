@@ -79,7 +79,7 @@ for uuid in "${EXTENSIONS[@]}"; do
 
     curl -fsSL -o "$zip" "https://extensions.gnome.org/download-extension/${uuid}.shell-extension.zip?version_tag=${pk}"
 
-    unzip -q "$zip" -d "/usr/share/gnome-shell/extensions/${uuid}"
+    unzip -oq "$zip" -d "/usr/share/gnome-shell/extensions/${uuid}"
     
     # Compile GSettings schemas if present
     if [ -d "/usr/share/gnome-shell/extensions/${uuid}/schemas" ]; then
@@ -100,7 +100,7 @@ curl -fsSL "$(
     jq -r '.assets[] | select(.name | endswith(".zip")) | .browser_download_url'
 )" -o "$tmp"
 
-unzip -q "$tmp" -d /usr/share/gnome-shell/extensions/systemd-manager@hardpixel.eu
+unzip -oq "$tmp" -d /usr/share/gnome-shell/extensions/systemd-manager@hardpixel.eu
 
 find /usr/share/gnome-shell/extensions/systemd-manager@hardpixel.eu -type d -exec chmod 755 {} +
 find /usr/share/gnome-shell/extensions/systemd-manager@hardpixel.eu -type f -exec chmod 644 {} +

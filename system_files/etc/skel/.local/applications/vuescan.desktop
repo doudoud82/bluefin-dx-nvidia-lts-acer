@@ -1,0 +1,14 @@
+[Desktop Entry]
+Version=1.0
+Name=VueScan
+GenericName=Scanning Program
+Comment=Scanning Program
+TryExec=/usr/bin/vuescan
+Exec=env GTK_THEME=adw-gtk3-dark /usr/bin/vuescan
+Icon=/usr/share/icons/hicolor/scalable/apps/vuescan.svg
+Terminal=false
+X-MultipleArgs=false
+Type=Application
+StartupNotify=false
+Categories=Graphics;Utility;
+Keywords=scan;scanner;

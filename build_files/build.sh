@@ -1,6 +1,8 @@
 #!/bin/bash
 
 set -ouex pipefail
+rm -rf /etc/skel/.config
+rm -rf /etc/skel/.local
 cp -avf "/ctx/system_files"/. /
 
 # Installing packages from Fedora repos

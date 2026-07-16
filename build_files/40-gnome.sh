@@ -3,6 +3,7 @@
 set -ouex pipefail
 
 dnf -y remove gnome-extensions-app 
+dnf clean all
 
 EXTENSIONS=(
     "adw-gtk3-colorizer@NiffirgkcaJ.github.com"

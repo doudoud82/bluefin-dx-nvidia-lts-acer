@@ -7,6 +7,5 @@ flatpak "org.gnome.meld"
 
 #Brew DX GUIs
 cask "cursor"
-tap "ublue-os/tap"
 cask "antigravity-ide-linux"
 cask "jetbrains-toolbox-linux"

@@ -1,0 +1,13 @@
+[Unit]
+Description=First login setup
+ConditionPathExists=!%h/.local/state/post-install.done
+After=graphical-session.target
+Wants=graphical-session.target
+
+[Service]
+Type=oneshot
+Environment=PATH=/home/linuxbrew/.linuxbrew/bin:/usr/local/sbin:/usr/local/bin:/usr/bin
+ExecStart=/usr/bin/ptyxis --standalone -- /usr/bin/bash -lc 'ujust post-install && mkdir -p ~/.local/state && touch ~/.local/state/post-install.done;echo "Setup complete. Press Enter to close.";read'
+
+[Install]
+WantedBy=graphical-session.target

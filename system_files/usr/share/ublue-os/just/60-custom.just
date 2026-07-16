@@ -1,24 +1,28 @@
 [group("System")]
 [no-exit-message]
 install-cli:
+    brew tap valkyrie00/bbrew
     brew trust valkyrie00/bbrew
     brew bundle --file=/usr/share/ublue-os/homebrew/cli.Brewfile
 
 [group("System")]
 [no-exit-message]
 install-fonts:
+    brew tap colindean/fonts-nonfree
     brew trust colindean/fonts-nonfree
     brew bundle --file=/usr/share/ublue-os/homebrew/fonts.Brewfile
 
 [group("System")]
 [no-exit-message]
 install-system-applications:
+    brew tap amir1376/tap
     brew trust amir1376/tap
     brew bundle --file=/usr/share/ublue-os/homebrew/system-flatpaks.Brewfile
 
 [group("System")]
 [no-exit-message]
 install-system-dx-applications:
+    brew tap ublue-os/tap
     brew trust ublue-os/tap
     brew bundle --file=/usr/share/ublue-os/homebrew/system-dx-flatpaks.Brewfile
 
@@ -31,16 +35,14 @@ post-install:
         --header "Select what to install" \
         "CLI tools" \
         "Fonts" \
+        "System Applications" \
         "System DX Applications" \
         "DX Groups")
     grep -qx "CLI tools" <<<"$choices" && ujust install-cli
     grep -qx "Fonts" <<<"$choices" && ujust install-fonts
+    grep -qx "System Applications" <<<"$choices" && ujust install-system-applications
     grep -qx "System DX Applications" <<<"$choices" && ujust install-system-dx-applications
     grep -qx "DX Groups" <<<"$choices" && ujust dx-group
-
-[group("System")]
-post-install-auto:
-    @ujust install-system-applications
 
 [group("System")]
 [no-exit-message]

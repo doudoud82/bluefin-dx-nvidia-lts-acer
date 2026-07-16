@@ -44,5 +44,4 @@ flatpak "org.remmina.Remmina"
 flatpak "page.tesk.Refine"
 
 # Brew GUIs
-tap "amir1376/tap"
 cask "ab-download-manager"

@@ -2,7 +2,7 @@
 disable-extension-version-validation=true
 enabled-extensions=['adw-gtk3-colorizer@NiffirgkcaJ.github.com', 'appindicatorsupport@rgcjonas.gmail.com',  'bazaar-integration@kolunmi.github.io', 'Bluetooth-Battery-Meter@maniacx.github.com', 'blur-my-shell@aunetx', 'clipboard-indicator@tudmotu.com', 'dash-to-dock@micxgx.gmail.com', 'extension-list@tu.berry', 'foresight@pesader.dev', 'gradia-integration@alexandervanhee.github.io', 'gsconnect@andyholmes.github.io', 'just-perfection-desktop@just-perfection', 'legacyschemeautoswitcher@joshimukul29.gmail.com', 'logomenu@aryan_k', 'MaximizeToEmptyWorkspace-extension@kovari.cc', 'MaximizeWindowIntoNewWorkspace@kyleross.com', 'printers@linux-man.org', 'search-light@icedman.github.com', 'status-area-horizontal-spacing@mathematical.coffee.gmail.com', 'systemd-manager@hardpixel.eu', 'user-theme@gnome-shell-extensions.gcampax.github.com', 'Vitals@CoreCoding.com', 'weatheroclock@CleoMenezesJr.github.io', 'window-title-is-back@fthx']
 favorite-apps=['org.gnome.Nautilus.desktop', 'brave-browser.desktop', 'org.gnome.Ptyxis.desktop', 'code.desktop']
-
+disabled-extensions=['window-title-is-back@fthx']
 
 [org/gnome/shell/extensions/Bluetooth-Battery-Meter]
 circle-widget-color=1

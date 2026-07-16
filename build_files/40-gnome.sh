@@ -1,47 +1,8 @@
 #!/bin/bash
 
 set -ouex pipefail
-rm -rf /etc/skel/.config
-rm -rf /etc/skel/.local
-cp -avf "/ctx/system_files"/. /
 
-# Installing packages from Fedora repos
-dnf -y install ncompress
-dnf clean all
-
-# Enable RPM Fusion
-dnf install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-"$(rpm -E %fedora)".noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-"$(rpm -E %fedora)".noarch.rpm
-dnf config-manager setopt rpmfusion-free.enabled=1 rpmfusion-free-updates.enabled=1
-dnf config-manager setopt rpmfusion-nonfree.enabled=1 rpmfusion-nonfree-updates.enabled=1
-
-# Install unrar from RPM Fusion and not from Fedora
-dnf -y install unrar  --disablerepo=* --enablerepo=rpmfusion-nonfree --enablerepo=rpmfusion-nonfree-updates
-# Disable RPM Fusion
-dnf config-manager setopt rpmfusion-free.enabled=0 rpmfusion-free-updates.enabled=0
-dnf config-manager setopt rpmfusion-nonfree.enabled=0 rpmfusion-nonfree-updates.enabled=0
-rm -f /etc/yum.repos.d/rpmfusion-free* /etc/yum.repos.d/rpmfusion-nonfree*
-dnf clean all
-
-# Install local rpms
-mkdir -p /var/usrlocal/bin
-dnf install -y --no-gpgchecks --setopt=tsflags=nocrypto /ctx/localrpms/*.rpm
-dnf clean all
-
-
-# Install SBCTL
-dnf -y copr enable chenxiaolong/sbctl
-dnf -y install sbctl
-dnf -y copr disable chenxiaolong/sbctl
-
-# Install Bibita cursor
-dnf -y copr enable peterwu/rendezvous
-dnf -y install bibata-cursor-themes
-dnf -y copr disable peterwu/rendezvous
-
-# Installing font,icon and gnome extension
-dnf -y install rsms-inter-fonts rsms-inter-vf-fonts papirus-icon-theme gnome-shell-extension-just-perfection gnome-shell-extension-user-theme
 dnf -y remove gnome-extensions-app 
-dnf clean all
 
 EXTENSIONS=(
     "adw-gtk3-colorizer@NiffirgkcaJ.github.com"
@@ -108,7 +69,3 @@ find /usr/share/gnome-shell/extensions/systemd-manager@hardpixel.eu -type f -exe
 glib-compile-schemas /usr/share/gnome-shell/extensions/systemd-manager@hardpixel.eu/schemas
 
 rm -f "$tmp"
-#Cursor Icon
-wget "https://uxwing.com/wp-admin/admin-ajax.php?action=resize_image&size=128x128&file=cursor-ai-code-icon.png&category_slug=brands-and-social-media" -O "/usr/share/icons/cursor.png"
-
-dconf update

@@ -4,6 +4,7 @@ install-cli:
     brew tap valkyrie00/bbrew
     brew trust valkyrie00/bbrew
     brew bundle --file=/usr/share/ublue-os/homebrew/cli.Brewfile
+    systemctl enable --user ssh-agent.socket 
 
 [group("System")]
 [no-exit-message]

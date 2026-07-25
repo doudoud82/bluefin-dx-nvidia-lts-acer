@@ -80,6 +80,6 @@ RUN --mount=type=bind,from=system-script,source=/50-system.sh,target=/ctx/50-sys
     --mount=type=cache,dst=/var/cache \
     --mount=type=cache,dst=/var/log \
     --mount=type=tmpfs,dst=/tmp \
-    /ctx/50-system.sh
+    ATH_PATCH=true /ctx/50-system.sh
 
 RUN bootc container lint

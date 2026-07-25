@@ -2,7 +2,7 @@
 # Sign up and add the Repository ID to the right field. Owners fields are optional.
 # Examples: https://artifacthub.io/packages/search?ts_query_web=ublue&sort=relevance&page=1 
 
-repositoryID: 597e5e10-58a7-4f48-a2e4-a37bd10fe20c # Fill in with your own credentials 
+repositoryID: 53f507b7-0022-4dc3-a81e-59c26402070e # Fill in with your own credentials 
 owners: # (optional, used to claim repository ownership)
   - name: doudou
     email: doudoud82@gmail.com

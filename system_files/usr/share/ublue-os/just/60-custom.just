@@ -1,6 +1,7 @@
 [group("System")]
 [no-exit-message]
 install-cli:
+    brew update
     brew tap valkyrie00/bbrew
     brew trust valkyrie00/bbrew
     brew bundle --file=/usr/share/ublue-os/homebrew/cli.Brewfile

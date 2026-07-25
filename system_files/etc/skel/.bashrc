@@ -1,3 +1,8 @@
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+    . /etc/bashrc
+fi
+
 export EDITOR="nano"
 command -v micro >/dev/null 2>&1 && export EDITOR=micro
 if [ -n "$DISPLAY" ]; then

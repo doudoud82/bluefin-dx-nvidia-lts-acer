@@ -16,6 +16,9 @@ COPY build_files/40-gnome.sh /
 FROM scratch AS system-script
 COPY build_files/50-system.sh /
 
+FROM scratch AS ath-patch
+COPY build_files/50-ath-patch.sh /
+
 FROM scratch AS system-files
 COPY system_files /
 
@@ -76,6 +79,7 @@ RUN --mount=type=bind,from=gnome-script,source=/40-gnome.sh,target=/ctx/40-gnome
     /ctx/40-gnome.sh
 
 RUN --mount=type=bind,from=system-script,source=/50-system.sh,target=/ctx/50-system.sh \
+    --mount=type=bind,from=ath-patch,source=/50-ath-patch.sh,target=/ctx/50-ath-patch.sh \
     --mount=type=bind,from=system-files,source=/,target=/ctx/system_files \
     --mount=type=cache,dst=/var/cache \
     --mount=type=cache,dst=/var/log \

@@ -24,10 +24,25 @@ COPY local_rpms /
 
 FROM ghcr.io/ublue-os/bluefin-dx:44
 
+# Switching to the kernel from akmods
+COPY --from=ghcr.io/ublue-os/akmods-nvidia-lts:main-44 /kernel-rpms /tmp/kernel-rpms
+RUN dnf -y remove --no-autoremove kernel kernel-devel kernel-core kernel-modules kernel-modules-core kernel-modules-extra
+RUN dnf -y install \
+    /tmp/kernel-rpms/kernel-[0-9]*.rpm \
+    /tmp/kernel-rpms/kernel-core-*.rpm \
+    /tmp/kernel-rpms/kernel-devel-*.rpm \
+    /tmp/kernel-rpms/kernel-modules-*.rpm
+# Installing stuff that got removed with the kernel
+RUN dnf -y install guestfs-tools virt-v2v virtualbox-guest-additions usbip
+# Installing v4l2loopback
+COPY --from=ghcr.io/ublue-os/akmods:main-44 /rpms /tmp/akmods-common
+RUN dnf -y install \
+    /tmp/akmods-common/ublue-os/ublue-os-akmods*.rpm \
+    /tmp/akmods-common/kmods/kmod-v4l2loopback*.rpm \
+    /tmp/akmods-common/common/v4l2loopback*.rpm
+# Installing nvidia-lts (580 branch)
 COPY --from=ghcr.io/ublue-os/akmods-nvidia-lts:main-44 /rpms /tmp/akmods-rpms
-RUN find /tmp/akmods-rpms/ublue-os/nvidia-install.sh
 RUN IMAGE_NAME="" ./tmp/akmods-rpms/ublue-os/nvidia-install.sh
-
 
 RUN --mount=type=bind,from=cleanup-script,source=/00-cleanup.sh,target=/ctx/00-cleanup.sh \
     --mount=type=cache,dst=/var/cache \
@@ -35,7 +50,7 @@ RUN --mount=type=bind,from=cleanup-script,source=/00-cleanup.sh,target=/ctx/00-c
     --mount=type=tmpfs,dst=/tmp \
     /ctx/00-cleanup.sh
 
-RUN --mount=type=bind,from=packages-script,source=/10-packages.sh,target=/ctx/10-packages.sh \
+    RUN --mount=type=bind,from=packages-script,source=/10-packages.sh,target=/ctx/10-packages.sh \
     --mount=type=cache,dst=/var/cache \
     --mount=type=cache,dst=/var/log \
     --mount=type=tmpfs,dst=/tmp \

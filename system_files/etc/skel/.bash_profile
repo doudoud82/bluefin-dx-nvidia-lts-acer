@@ -21,6 +21,11 @@ if [[ -r "$HOME/.opam/opam-init/init.sh" ]]; then
     . "$HOME/.opam/opam-init/init.sh" >/dev/null 2>&1
 fi
 
+# Load rustup bins from linuxbrew
+if [[ -d "/home/linuxbrew/.linuxbrew/opt/rustup/bin" ]]; then
+    PATH="/home/linuxbrew/.linuxbrew/opt/rustup/bin:$PATH"
+fi
+
 # source bashrc for login shell
 if [ -f "$HOME/.bashrc" ]; then
     . "$HOME/.bashrc"

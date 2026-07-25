@@ -1,6 +1,9 @@
 [group("System")]
 [no-exit-message]
 install-cli:
+    curl -fsSL https://github.com/akinomyoga/ble.sh/releases/download/nightly/ble-nightly.tar.xz | tar -xJf -
+    bash ble-nightly/ble.sh --install "$HOME/.local/share"
+    rm -rf ble-nightly
     brew update
     brew tap valkyrie00/bbrew
     brew trust valkyrie00/bbrew

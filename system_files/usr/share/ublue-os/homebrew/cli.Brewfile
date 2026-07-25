@@ -1,6 +1,5 @@
 tap "valkyrie00/bbrew"
 brew "atuin"
-brew "bash-preexec"
 brew "bat"
 brew "bat-extras"
 brew "chezmoi"

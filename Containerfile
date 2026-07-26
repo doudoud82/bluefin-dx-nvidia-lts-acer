@@ -7,6 +7,9 @@ COPY build_files/10-packages.sh /
 FROM scratch AS local-rpms-script
 COPY build_files/20-local-rpms.sh /
 
+FROM scratch AS local-rpms
+COPY local_rpms /
+
 FROM scratch AS copr-script
 COPY build_files/30-copr.sh /
 
@@ -16,36 +19,16 @@ COPY build_files/40-gnome.sh /
 FROM scratch AS system-script
 COPY build_files/50-system.sh /
 
-FROM scratch AS ath-patch
-COPY build_files/50-ath-patch.sh /
-
 FROM scratch AS system-files
 COPY system_files /
 
-FROM scratch AS local-rpms
-COPY local_rpms /
+FROM scratch AS akmods-script
+COPY build_files/60-akmods.sh /
+
+FROM scratch AS ath-patch-script
+COPY build_files/60-ath-patch.sh /
 
 FROM ghcr.io/ublue-os/bluefin-dx:44
-
-# Switching to the kernel from akmods
-COPY --from=ghcr.io/ublue-os/akmods-nvidia-lts:main-44 /kernel-rpms /tmp/kernel-rpms
-RUN dnf -y remove --no-autoremove kernel kernel-devel kernel-core kernel-modules kernel-modules-core kernel-modules-extra
-RUN dnf -y install \
-    /tmp/kernel-rpms/kernel-[0-9]*.rpm \
-    /tmp/kernel-rpms/kernel-core-*.rpm \
-    /tmp/kernel-rpms/kernel-devel-*.rpm \
-    /tmp/kernel-rpms/kernel-modules-*.rpm
-# Installing stuff that got removed with the kernel
-RUN dnf -y install guestfs-tools virt-v2v virtualbox-guest-additions usbip
-# Installing v4l2loopback
-COPY --from=ghcr.io/ublue-os/akmods:main-44 /rpms /tmp/akmods-common
-RUN dnf -y install \
-    /tmp/akmods-common/ublue-os/ublue-os-akmods*.rpm \
-    /tmp/akmods-common/kmods/kmod-v4l2loopback*.rpm \
-    /tmp/akmods-common/common/v4l2loopback*.rpm
-# Installing nvidia-lts (580 branch)
-COPY --from=ghcr.io/ublue-os/akmods-nvidia-lts:main-44 /rpms /tmp/akmods-rpms
-RUN IMAGE_NAME="" ./tmp/akmods-rpms/ublue-os/nvidia-install.sh
 
 RUN --mount=type=bind,from=cleanup-script,source=/00-cleanup.sh,target=/ctx/00-cleanup.sh \
     --mount=type=cache,dst=/var/cache \
@@ -79,11 +62,20 @@ RUN --mount=type=bind,from=gnome-script,source=/40-gnome.sh,target=/ctx/40-gnome
     /ctx/40-gnome.sh
 
 RUN --mount=type=bind,from=system-script,source=/50-system.sh,target=/ctx/50-system.sh \
-    --mount=type=bind,from=ath-patch,source=/50-ath-patch.sh,target=/ctx/50-ath-patch.sh \
     --mount=type=bind,from=system-files,source=/,target=/ctx/system_files \
     --mount=type=cache,dst=/var/cache \
     --mount=type=cache,dst=/var/log \
     --mount=type=tmpfs,dst=/tmp \
-    ATH_PATCH=true /ctx/50-system.sh
+    /ctx/50-system.sh
+
+RUN --mount=type=bind,from=akmods-script,source=/60-akmods.sh,target=/ctx/60-akmods.sh \
+    --mount=type=bind,from=ath-patch-script,source=/60-ath-patch.sh,target=/ctx/60-ath-patch.sh \
+    --mount=type=bind,from=ghcr.io/ublue-os/akmods-nvidia-lts:main-44,source=/kernel-rpms,target=/ctx/kernel-rpms \
+    --mount=type=bind,from=ghcr.io/ublue-os/akmods:main-44,source=/rpms,target=/ctx/akmods-common \
+    --mount=type=bind,from=ghcr.io/ublue-os/akmods-nvidia-lts:main-44,source=/rpms,target=/ctx/akmods-nvidia-lts \
+    --mount=type=cache,dst=/var/cache \
+    --mount=type=cache,dst=/var/log \
+    --mount=type=tmpfs,dst=/tmp \
+    ATH_PATCH=true /ctx/60-akmods.sh
 
 RUN bootc container lint

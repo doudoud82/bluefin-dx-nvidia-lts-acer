@@ -22,9 +22,9 @@ if [[ "${CURRENT_KVER}" != "${TARGET_KVER}" ]]; then
     # Reinstall stuff that gets pulled out with the kernel swap
     dnf -y install guestfs-tools virt-v2v virtualbox-guest-additions usbip
 
-    # v4l2loopback shipped in bluefin-dx is built against bluefin-dx's own kernel.
+    # v4l2loopback shipped in bluefin-dx-nvidia-open is built against it's own kernel.
     # If we just swapped kernels, we need the akmods-built kmod that matches the
-    # *new* kernel instead — pull it from the same akmods:main-44 image.
+    # *new* kernel instead — pull it from the newer akmods:main-44 image.
     echo "==> Reinstalling v4l2loopback matched to the new kernel"
     dnf -y install \
         /ctx/akmods-common/ublue-os/ublue-os-akmods*.rpm \
@@ -34,10 +34,17 @@ else
     echo "==> Kernel already matches akmods target, skipping kernel switch and v4l2loopback reinstall"
 fi
 
-# ── 2. nvidia-lts (580 branch) ───────────────────────────────────────────────
-# Sanity check: nvidia-vars' KERNEL_VERSION must match what's actually installed,
-# otherwise dnf5 will fail to find kmod-nvidia-<KERNEL_VERSION>-... and we want
-# a clear error rather than a confusing package-not-found from deep in the script.
+# ── 2. Downgrade Nvidia: base ships nvidia open driver, 
+# we want 580 proprietary from akmods-nvidia-lts.
+echo "==> Removing base's nvidia driver to allow 580 downgrade"
+dnf -y remove --no-autoremove \
+        nvidia-driver-common \
+        nvidia-libXNVCtrl \
+        nvidia-modprobe \
+        ublue-os-nvidia-addons \
+        || echo "==> Some packages already absent, continuing"
+
+echo "==> Installing Nvidia 580 (LTS) via akmods-nvidia-lts"
 source /ctx/akmods-nvidia-lts/kmods/nvidia-vars
 INSTALLED_KVER=$(rpm -q --qf '%{VERSION}-%{RELEASE}.%{ARCH}' kernel-core)
 if [[ "${INSTALLED_KVER}" != "${KERNEL_VERSION}" ]]; then

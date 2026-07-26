@@ -24,6 +24,7 @@ jobs:
   build_push:
     name: Build and push image
     runs-on: ubuntu-24.04
+    if: github.actor != 'dependabot[bot]'
 
     permissions:
       contents: read

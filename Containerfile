@@ -75,7 +75,6 @@ RUN --mount=type=bind,from=akmods-script,source=/60-akmods.sh,target=/ctx/60-akm
     --mount=type=bind,from=ghcr.io/ublue-os/akmods-nvidia-lts:main-44,source=/rpms,target=/ctx/akmods-nvidia-lts \
     --mount=type=cache,dst=/var/cache \
     --mount=type=cache,dst=/var/log \
-    --mount=type=tmpfs,dst=/tmp \
     ATH_PATCH=true /ctx/60-akmods.sh
 
 RUN bootc container lint

@@ -39,7 +39,7 @@ fi
 # otherwise dnf5 will fail to find kmod-nvidia-<KERNEL_VERSION>-... and we want
 # a clear error rather than a confusing package-not-found from deep in the script.
 source /ctx/akmods-nvidia-lts/kmods/nvidia-vars
-INSTALLED_KVER=$(rpm -q --qf '%{VERSION}-%{RELEASE}.%{_arch}' kernel-core)
+INSTALLED_KVER=$(rpm -q --qf '%{VERSION}-%{RELEASE}.%{ARCH}' kernel-core)
 if [[ "${INSTALLED_KVER}" != "${KERNEL_VERSION}" ]]; then
     echo "ERROR: installed kernel (${INSTALLED_KVER}) does not match nvidia-vars KERNEL_VERSION (${KERNEL_VERSION})"
     echo "This likely means the kernel-switch step above didn't run when it needed to."

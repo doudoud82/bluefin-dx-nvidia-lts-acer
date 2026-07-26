@@ -19,7 +19,6 @@ EXTENSIONS=(
     "systemd-manager@hardpixel.eu"
     "Vitals@CoreCoding.com"
     "weatheroclock@CleoMenezesJr.github.io"
-    "window-title-is-back@fthx"
 )
 mkdir -p /usr/share/gnome-shell/extensions
 for uuid in "${EXTENSIONS[@]}"; do

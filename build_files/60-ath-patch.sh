@@ -4,13 +4,12 @@ set -euo pipefail
 KVER=$(rpm -q --qf '%{VERSION}-%{RELEASE}.%{ARCH}' kernel-core)
 KPLAIN=$(rpm -q --qf '%{VERSION}' kernel-core)
 KDIR="/usr/src/kernels/${KVER}"
-WORKDIR="/tmp/kernel-src"
+WORKDIR=$(mktemp -d)
+trap 'rm -rf "${WORKDIR}"' EXIT
 SRC="${WORKDIR}/linux-${KPLAIN}/drivers/net/wireless/ath"
 DEST="/usr/lib/modules/${KVER}/kernel/drivers/net/wireless/ath"
 echo "==> Target kernel: KVER=${KVER}  KPLAIN=${KPLAIN}"
 dnf5 -y config-manager setopt fedora-source.enabled=1 updates-source.enabled=1
-
-mkdir -p "${WORKDIR}"
 dnf5 download --source "kernel-$(rpm -q --qf '%{VERSION}-%{RELEASE}' kernel-core)" --destdir "${WORKDIR}"
 cd "${WORKDIR}"
 rpm2cpio kernel-*.src.rpm | cpio -idmv
@@ -24,7 +23,7 @@ dnf5 -y config-manager setopt fedora-source.enabled=0 updates-source.enabled=0
 
 # ── write + run the ath_regd patch ───────────────────────────────────────────
 echo "==> Applying CONFIG_ATH_USER_REGD patch"
-cat > /tmp/apply_ath_regd_patch.py << 'PYEOF'
+cat > "${WORKDIR}/apply_ath_regd_patch.py" << 'PYEOF'
 import sys, re
 
 path_regd = sys.argv[1] + "/drivers/net/wireless/ath/regd.c"
@@ -90,7 +89,7 @@ else:
         f.write(new)
 PYEOF
 
-python3 /tmp/apply_ath_regd_patch.py "${WORKDIR}/linux-${KPLAIN}"
+python3 "${WORKDIR}/apply_ath_regd_patch.py" "${WORKDIR}/linux-${KPLAIN}"
 
 echo "==> Building ath.ko"
 make -j"$(nproc)" -C "${KDIR}" \

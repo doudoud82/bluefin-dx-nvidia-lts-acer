@@ -5,12 +5,22 @@ KVER=$(rpm -q --qf '%{VERSION}-%{RELEASE}.%{ARCH}' kernel-core)
 KPLAIN=$(rpm -q --qf '%{VERSION}' kernel-core)
 KDIR="/usr/src/kernels/${KVER}"
 WORKDIR=$(mktemp -d)
-trap 'rm -rf "${WORKDIR}"' EXIT
+
+cleanup() {
+    rm -rf "${WORKDIR}"
+    dnf5 -y remove koji || true
+    dnf5 clean all || true
+}
+trap cleanup EXIT
+
 SRC="${WORKDIR}/linux-${KPLAIN}/drivers/net/wireless/ath"
 DEST="/usr/lib/modules/${KVER}/kernel/drivers/net/wireless/ath"
 echo "==> Target kernel: KVER=${KVER}  KPLAIN=${KPLAIN}"
-dnf5 -y config-manager setopt fedora-source.enabled=1 updates-source.enabled=1
-dnf5 download --source "kernel-$(rpm -q --qf '%{VERSION}-%{RELEASE}' kernel-core)" --destdir "${WORKDIR}"
+
+dnf5 -y install koji
+echo "==> Fetching src.rpm for ${KNVR} from Koji"
+koji download-build --arch=src --destdir "${WORKDIR}" "${KNVR}"
+
 cd "${WORKDIR}"
 rpm2cpio kernel-*.src.rpm | cpio -idmv
 
@@ -19,7 +29,6 @@ tar -xf "linux-${KPLAIN}.tar.xz"
 cd "linux-${KPLAIN}"
 REDHAT_PATCH=$(ls ../patch-*-redhat.patch)
 patch -p1 < "${REDHAT_PATCH}"
-dnf5 -y config-manager setopt fedora-source.enabled=0 updates-source.enabled=0
 
 # ── write + run the ath_regd patch ───────────────────────────────────────────
 echo "==> Applying CONFIG_ATH_USER_REGD patch"

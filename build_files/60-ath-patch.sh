@@ -2,6 +2,7 @@
 set -euo pipefail
 
 KVER=$(rpm -q --qf '%{VERSION}-%{RELEASE}.%{ARCH}' kernel-core)
+KNVR=$(rpm -q --qf 'kernel-%{VERSION}-%{RELEASE}\n' kernel-core)
 KPLAIN=$(rpm -q --qf '%{VERSION}' kernel-core)
 KDIR="/usr/src/kernels/${KVER}"
 WORKDIR=$(mktemp -d)

@@ -83,3 +83,133 @@ install-lbp6020:
     systemctl enable --now ccpd.service >/dev/null
 
     echo "Canon LBP6020 configured successfully."
+
+[group("System")]
+[no-exit-message]
+enable-adguard-home:
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    if ! gum confirm "Replace system DNS with AdGuard Home?"; then
+        exit 0
+    fi
+
+    ###########################################################################
+    # Disable systemd-resolved
+    ###########################################################################
+
+    echo "==> Disabling systemd-resolved..."
+
+    sudo systemctl disable --now \
+        systemd-resolved.service \
+        systemd-resolved-monitor.socket \ 
+        systemd-resolved-varlink.socket
+
+    ###########################################################################
+    # Configure NetworkManager
+    ###########################################################################
+
+    echo "==> Configuring NetworkManager..."
+
+    for UUID in $(nmcli --get-values UUID connection show); do
+        sudo nmcli connection modify "$UUID" \
+            ipv4.ignore-auto-dns yes \
+            ipv4.dns "127.0.0.1 1.1.1.1" \
+            ipv6.ignore-auto-dns yes \
+            ipv6.dns "::1 2606:4700:4700::1111"
+    done
+    
+    sudo rm -f /etc/resolv.conf
+    sudo systemctl reload NetworkManager
+
+    ###########################################################################
+    # Install AdGuard Home
+    ###########################################################################
+
+    echo "==> Installing AdGuard Home..."
+
+    sudo mkdir -p /var/lib/adguardhome/{conf,work}
+    sudo mkdir -p /etc/containers/systemd
+
+    sudo tee /etc/containers/systemd/adguardhome.container >/dev/null <<'EOF'
+    [Unit]
+    Description=AdGuard Home
+
+    [Container]
+    Image=docker.io/adguard/adguardhome:latest
+
+    PublishPort=53:53/tcp
+    PublishPort=53:53/udp
+    PublishPort=80:80/tcp
+    PublishPort=443:443/tcp
+    PublishPort=443:443/udp
+    PublishPort=3000:3000/tcp
+
+    Volume=/var/lib/adguardhome/work:/opt/adguardhome/work:Z
+    Volume=/var/lib/adguardhome/conf:/opt/adguardhome/conf:Z
+
+    AutoUpdate=registry
+
+    [Service]
+    Restart=always
+
+    [Install]
+    WantedBy=multi-user.target
+    EOF
+
+    if [[ -f /usr/local/share/AdGuardHome/AdGuardHome.yaml ]] &&
+    gum confirm "Import existing AdGuard Home configuration?"; then
+        echo "==> Importing configuration..."
+        sudo cp \
+            /usr/local/share/AdGuardHome/AdGuardHome.yaml \
+            /var/lib/adguardhome/conf/
+        imported_config=true
+    fi
+
+    sudo systemctl daemon-reload
+    sudo systemctl start adguardhome.service 
+
+    sudo firewall-cmd --permanent --add-service=dns
+    sudo firewall-cmd --reload
+
+    echo
+    echo "=================================================================="
+    echo " AdGuard Home has been installed."
+    echo
+    if ! $imported_config; then
+        echo " Complete the setup at:"
+        echo
+        echo "     http://localhost:3000"
+        echo
+    fi
+    echo "=================================================================="
+
+[group("System")]
+[no-exit-message]
+reset-adguard-home:
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    if ! gum confirm "Reset AdGuard Home configuration?"; then
+        exit 0
+    fi
+
+    echo "==> Resetting AdGuard Home..."
+
+    sudo systemctl stop adguardhome.service
+
+    sudo rm -rf \
+        /var/lib/adguardhome/conf/* \
+        /var/lib/adguardhome/work/*
+
+    sudo systemctl start adguardhome.service
+
+    echo
+    echo "=================================================================="
+    echo " AdGuard Home has been reset."
+    echo
+    echo " Open:"
+    echo
+    echo "     http://localhost:3000"
+    echo
+    echo "=================================================================="

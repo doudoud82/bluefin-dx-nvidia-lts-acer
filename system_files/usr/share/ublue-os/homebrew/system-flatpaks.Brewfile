@@ -1,5 +1,6 @@
 # Default system-wide flatpaks for Bluefin
 flatpak "be.alexandervanhee.gradia"
+flatpak "ca.desrt.dconf-editor"
 flatpak "com.brave.Browser"
 flatpak "com.github.PintaProject.Pinta"
 flatpak "com.github.tchx84.Flatseal"

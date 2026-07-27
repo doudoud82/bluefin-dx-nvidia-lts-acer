@@ -20,9 +20,8 @@ echo "==> Target kernel: KVER=${KVER}  KPLAIN=${KPLAIN}"
 
 dnf5 -y install koji
 echo "==> Fetching src.rpm for ${KNVR} from Koji"
-koji download-build --arch=src --destdir "${WORKDIR}" "${KNVR}"
-
 cd "${WORKDIR}"
+koji download-build --arch=src "${KNVR}"
 rpm2cpio kernel-*.src.rpm | cpio -idmv
 
 echo "==> Extracting source tarball"

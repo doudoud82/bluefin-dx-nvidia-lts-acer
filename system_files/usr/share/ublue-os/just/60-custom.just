@@ -157,11 +157,11 @@ enable-adguard-home:
     WantedBy=multi-user.target
     EOF
 
-    if [[ -f /usr/local/share/AdGuardHome/AdGuardHome.yaml ]] &&
+    if [[ -f /usr/share/AdGuardHome/AdGuardHome.yaml ]] &&
     gum confirm "Import existing AdGuard Home configuration?"; then
         echo "==> Importing configuration..."
         sudo cp \
-            /usr/local/share/AdGuardHome/AdGuardHome.yaml \
+            /usr/share/AdGuardHome/AdGuardHome.yaml \
             /var/lib/adguardhome/conf/
         imported_config=true
     fi

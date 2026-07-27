@@ -10,7 +10,7 @@ apps=['org.libreoffice.LibreOffice.desktop','org.gnome.Papers.desktop','org.libr
 
 [org/gnome/desktop/app-folders/folders/Internet]
 name='Internet'
-apps=['com.brave.Browser.desktop','com.abdownloadmanager.desktop','com.google.Chrome.desktop','org.mozilla.firefox.desktop','eu.betterbird.Betterbird.desktop','com.protonvpn.www.desktop','org.gnome.Connections.desktop','org.remmina.Remmina.desktop','io.github.martchus.syncthingtray.desktop']
+apps=['com.brave.Browser.desktop','com.abdownloadmanager.desktop','com.google.Chrome.desktop','org.mozilla.firefox.desktop','eu.betterbird.Betterbird.desktop','com.protonvpn.www.desktop','org.gnome.Connections.desktop','org.remmina.Remmina.desktop','io.github.martchus.syncthingtray.desktop', 'org.qbittorrent.qBittorrent.desktop']
 
 [org/gnome/desktop/app-folders/folders/Graphics]
 name='Graphics'

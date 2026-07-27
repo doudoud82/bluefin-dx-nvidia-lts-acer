@@ -42,6 +42,7 @@ flatpak "org.gtk.Gtk3theme.adw-gtk3"
 flatpak "org.libreoffice.LibreOffice"
 flatpak "org.mozilla.firefox"
 flatpak "org.remmina.Remmina"
+flatpak "org.qbittorrent.qBittorrent"
 flatpak "page.tesk.Refine"
 
 # Brew GUIs

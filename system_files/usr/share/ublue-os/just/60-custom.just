@@ -213,3 +213,28 @@ reset-adguard-home:
     echo "     http://localhost:3000"
     echo
     echo "=================================================================="
+
+[group("System")]
+[no-exit-message]
+fix-flatpak:
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    echo "==> Configuring Flatpak GTK integration..."
+
+    sudo flatpak override \
+        --filesystem=xdg-config/gtk-3.0:ro \
+        --filesystem=xdg-config/gtk-4.0:ro
+
+    mkdir -p ~/.config/gtk-3.0 ~/.config/gtk-4.0
+
+    cat > ~/.config/gtk-3.0/settings.ini <<'EOF'
+    [Settings]
+    gtk-theme-name=adw-gtk3-dark
+    gtk-application-prefer-dark-theme=true
+    EOF
+
+    cat > ~/.config/gtk-4.0/settings.ini <<'EOF'
+    [Settings]
+    gtk-application-prefer-dark-theme=true
+    EOF

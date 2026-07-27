@@ -1,0 +1,14 @@
+bleopt exec_restore_pipestatus=1
+#Not sure about this one
+bleopt prompt_command_changes_layout=1
+
+# Bash completion
+[[ -r /etc/profile.d/bash_completion.sh ]] && source /etc/profile.d/bash_completion.sh
+[[ -r /etc/profile.d/brew-bash-completion.sh ]] && source /etc/profile.d/brew-bash-completion.sh
+
+ble-import integration/fzf-initialize
+ble-import integration/fzf-completion
+ble-import integration/fzf-key-bindings 
+_ble_contrib_fzf_git_config=key-binding:sabbrev:arpeggio
+ble-import integration/fzf-git
+ble-import integration/fzf-menu

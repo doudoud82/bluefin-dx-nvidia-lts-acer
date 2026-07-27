@@ -12,7 +12,6 @@ EXTENSIONS=(
     "extension-list@tu.berry"
     "foresight@pesader.dev"
     "legacyschemeautoswitcher@joshimukul29.gmail.com"
-    "MaximizeToEmptyWorkspace-extension@kovari.cc"
     "MaximizeWindowIntoNewWorkspace@kyleross.com"
     "printers@linux-man.org"
     "status-area-horizontal-spacing@mathematical.coffee.gmail.com"

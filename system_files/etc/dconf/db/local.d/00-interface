@@ -21,3 +21,6 @@ region='en_GB.UTF-8'
 
 [org/gnome/mutter]
 attach-modal-dialogs=false
+
+[/org/gnome/shell/window-switcher]
+current-workspace-only=false

@@ -13,6 +13,7 @@ echo "==> akmods kernel:   ${TARGET_KVER}"
 if [[ "${CURRENT_KVER}" != "${TARGET_KVER}" ]]; then
     echo "==> Kernel mismatch, switching to the akmods kernel"
     dnf -y remove --no-autoremove kernel kernel-devel kernel-core kernel-modules kernel-modules-core kernel-modules-extra
+    rm -rf /usr/lib/modules
     dnf -y install \
         /ctx/kernel-rpms/kernel-[0-9]*.rpm \
         /ctx/kernel-rpms/kernel-core-*.rpm \

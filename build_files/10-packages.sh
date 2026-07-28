@@ -2,12 +2,16 @@
 
 set -ouex pipefail
 
-# Installing packages from Fedora repos
-dnf -y install ncompress
 
-# Installing font,icon and gnome extension
-dnf -y install rsms-inter-fonts rsms-inter-vf-fonts papirus-icon-theme gnome-shell-extension-just-perfection gnome-shell-extension-user-theme
 
+# Installing packages,font,icon and gnome extension from Fedora repos
+dnf -y install ncompress \
+    variety \
+    rsms-inter-fonts \
+    rsms-inter-vf-fonts \
+    papirus-icon-theme \
+    gnome-shell-extension-just-perfection \
+    gnome-shell-extension-user-theme
 dnf clean all
 
 # Enable RPM Fusion

@@ -116,7 +116,7 @@ enable-adguard-home:
 
     sudo systemctl disable --now \
         systemd-resolved.service \
-        systemd-resolved-monitor.socket \ 
+        systemd-resolved-monitor.socket \
         systemd-resolved-varlink.socket
 
     ###########################################################################

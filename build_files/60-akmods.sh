@@ -9,6 +9,10 @@ TARGET_KVER=$(rpm -qp --qf '%{VERSION}-%{RELEASE}.%{ARCH}' "${TARGET_KERNEL_CORE
 
 echo "==> Current kernel:  ${CURRENT_KVER}"
 echo "==> akmods kernel:   ${TARGET_KVER}"
+if ! grep -qxF 'layout=ostree' /usr/lib/kernel/install.conf 2>/dev/null; then
+    echo "==> Restoring kernel-install ostree layout"
+    printf 'layout=ostree\n' > /usr/lib/kernel/install.conf
+fi
 
 if [[ "${CURRENT_KVER}" != "${TARGET_KVER}" ]]; then
     echo "==> Kernel mismatch, switching to the akmods kernel"

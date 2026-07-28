@@ -34,19 +34,19 @@ install-system-dx-applications:
     brew trust ublue-os/tap
     brew bundle --file=/usr/share/ublue-os/homebrew/system-dx-flatpaks.Brewfile
     mkdir -p "$HOME/.local/share/applications"
-    cat > "$HOME/.local/share/applications/cursor.desktop" <<EOF
-    [Desktop Entry]
-    Version=1.0
-    Type=Application
-    Name=Cursor
-    Comment=AI Code Editor
-    Exec=$HOME/Applications/Cursor.AppImage %F
-    Icon=cursor
-    Terminal=false
-    Categories=Development;IDE;TextEditor;
-    StartupNotify=true
-    MimeType=text/plain;
-    EOF
+    printf '%s\n' \
+    '[Desktop Entry]' \
+    'Version=1.0' \
+    'Type=Application' \
+    'Name=Cursor' \
+    'Comment=AI Code Editor' \
+    "Exec=$HOME/Applications/Cursor.AppImage %F" \
+    'Icon=cursor' \
+    'Terminal=false' \
+    'Categories=Development;IDE;TextEditor;' \
+    'StartupNotify=true' \
+    'MimeType=text/plain;' \
+    > "$HOME/.local/share/applications/cursor.desktop"
 
 [group("System")]
 [no-exit-message]

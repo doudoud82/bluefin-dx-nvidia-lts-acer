@@ -253,15 +253,36 @@ fix-flatpak:
     gtk-application-prefer-dark-theme=true
     EOF
 
-# Enroll Nvidia driver & KMOD signing key for secure boot 
-# Enroll personal MOK for ath module
-# Enter password "doudou" if prompted
+# Initialize Secure Boot (if needed) and enroll module signing keys
+# Enter password "doudou" in the MOK manager after reboot.
 secure-boot-key:
-    #!/usr/bin/bash
+    #!/usr/bin/env bash
+    set -euo pipefail
+    SBCTL_STATUS="$(sbctl status --json)"
     ENROLLMENT_PASSWORD="doudou"
+
+    if jq -e '.setup_mode' <<<"${SBCTL_STATUS}" >/dev/null; then
+        echo "Firmware is in Setup Mode."
+        echo "==> Creating Secure Boot keys..."
+        sudo sbctl create-keys
+        echo "==> Enrolling Secure Boot keys..."
+        sudo sbctl enroll-keys -m
+    fi
+
+    echo "==> Importing MOK certificates..."
+
     sudo bash <<EOF
     mokutil --timeout -1
-    echo -e "$ENROLLMENT_PASSWORD\n$ENROLLMENT_PASSWORD" | mokutil --import "/etc/pki/akmods/certs/akmods-ublue.der"
-    echo -e "$ENROLLMENT_PASSWORD\n$ENROLLMENT_PASSWORD" | mokutil --import "/etc/pki/doudoud82/doudou.der"
+    echo -e "${ENROLLMENT_PASSWORD}\n${ENROLLMENT_PASSWORD}" | mokutil --import "/etc/pki/akmods/certs/akmods-ublue.der"
+    echo -e "${ENROLLMENT_PASSWORD}\n${ENROLLMENT_PASSWORD}" | mokutil --import "/etc/pki/doudoud82/doudou.der"
     EOF
-    echo 'At next reboot, the mokutil UEFI menu UI will be displayed (*QWERTY* keyboard input and navigation).\nThen, select "Enroll MOK", and input "doudou" as the password'
+
+    echo
+    echo "Reboot to complete enrollment."
+    echo
+    echo "In the MOK Manager:"
+    echo "  • Select 'Enroll MOK'"
+    echo "  • Enter the password: doudou"
+    echo
+    echo "If Secure Boot keys were enrolled with sbctl, you may also need to"
+    echo "complete the firmware's Secure Boot key enrollment process."

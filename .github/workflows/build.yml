@@ -70,6 +70,8 @@ jobs:
       # This actually builds the container image
       - name: Build Image
         id: build-image
+        env:
+          DOUDOU_PRIV_KEY: ${{ secrets.DOUDOU_PRIV_KEY }}
         run: |
           sudo -E $(command -v just) build \
             ${IMAGE_NAME} \

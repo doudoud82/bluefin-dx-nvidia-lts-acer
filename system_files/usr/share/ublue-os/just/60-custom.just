@@ -252,3 +252,16 @@ fix-flatpak:
     [Settings]
     gtk-application-prefer-dark-theme=true
     EOF
+
+# Enroll Nvidia driver & KMOD signing key for secure boot 
+# Enroll personal MOK for ath module
+# Enter password "doudou" if prompted
+secure-boot-key:
+    #!/usr/bin/bash
+    ENROLLMENT_PASSWORD="doudou"
+    sudo bash <<EOF
+    mokutil --timeout -1
+    echo -e "$ENROLLMENT_PASSWORD\n$ENROLLMENT_PASSWORD" | mokutil --import "/etc/pki/akmods/certs/akmods-ublue.der"
+    echo -e "$ENROLLMENT_PASSWORD\n$ENROLLMENT_PASSWORD" | mokutil --import "/etc/pki/doudoud82/doudou.der"
+    EOF
+    echo 'At next reboot, the mokutil UEFI menu UI will be displayed (*QWERTY* keyboard input and navigation).\nThen, select "Enroll MOK", and input "doudou" as the password'

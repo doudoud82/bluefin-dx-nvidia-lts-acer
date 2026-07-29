@@ -112,7 +112,7 @@ KO="${SRC}/ath.ko"
 if [[ -f "${DEST}/ath.ko.zst" ]]; then
     zstd -f -q "${KO}" -o "${DEST}/ath.ko.zst"
 elif [[ -f "${DEST}/ath.ko.xz" ]]; then
-    xz -f -c "${KO}" > "${DEST}/ath.ko.xz"
+    xz -f -c --check=crc32 "${KO}" > "${DEST}/ath.ko.xz"
 else
     cp -f "${KO}" "${DEST}/ath.ko"
 fi

@@ -106,6 +106,8 @@ make -j"$(nproc)" -C "${KDIR}" \
     KCFLAGS="-DCONFIG_ATH_USER_REGD" \
     modules
 
+KO="${SRC}/ath.ko"
+
 echo "Installing temporary signing key"
 SIGN_KEY="/etc/pki/doudoud82/doudou.priv"
 SIGN_CERT="/etc/pki/doudoud82/doudou.der"
@@ -133,7 +135,6 @@ echo "==> Removing private key"
 rm -f "${SIGN_KEY}"
 
 echo "==> Installing patched module into ${DEST}"
-KO="${SRC}/ath.ko"
 
 if [[ -f "${DEST}/ath.ko.zst" ]]; then
     zstd -f -q "${KO}" -o "${DEST}/ath.ko.zst"

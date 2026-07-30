@@ -1,0 +1,15 @@
+{
+    "transports": {
+        "docker": {
+            "ghcr.io/doudoud82/bluefin-dx-nvidia-lts-acer": [
+                {
+                    "type": "sigstoreSigned",
+                    "keyPath": "/etc/pki/containers/bluefin-dx-nvidia-lts-acer.pub",
+                    "signedIdentity": {
+                        "type": "matchRepository"
+                    }
+                }
+            ]
+        }
+    }
+}

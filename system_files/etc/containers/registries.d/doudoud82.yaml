@@ -1,0 +1,3 @@
+docker:
+  ghcr.io/doudoud82/bluefin-dx-nvidia-lts-acer:
+    use-sigstore-attachments: true

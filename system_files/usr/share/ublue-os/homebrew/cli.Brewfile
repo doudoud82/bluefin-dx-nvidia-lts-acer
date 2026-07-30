@@ -1,5 +1,6 @@
 tap "valkyrie00/bbrew"
 brew "atuin"
+brew "aria2"
 brew "bat"
 brew "bat-extras"
 brew "chezmoi"

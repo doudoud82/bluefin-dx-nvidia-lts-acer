@@ -1,3 +1,3 @@
-alias tobash='sudo chsh $USER -s /usr/bin/bash'
-alias tozsh='sudo chsh $USER -s /usr/bin/zsh'
-alias tofish='sudo chsh $USER -s /usr/bin/fish'
+alias tobash='sudo usermod -s /usr/bin/bash "$USER"'
+alias tozsh='sudo usermod -s /usr/bin/zsh "$USER"'
+alias tofish='sudo usermod -s /usr/bin/fish "$USER"'

@@ -7,7 +7,6 @@ set -ouex pipefail
 # Installing packages,font,icon and gnome extension from Fedora repos
 dnf -y install ncompress \
     variety \
-    util-linux \
     rsms-inter-fonts \
     rsms-inter-vf-fonts \
     papirus-icon-theme \

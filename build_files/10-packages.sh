@@ -21,6 +21,6 @@ dnf install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-
 dnf -y install unrar --disablerepo=* --enablerepo=rpmfusion-nonfree --enablerepo=rpmfusion-nonfree-updates
 
 # Remove RPM Fusion repos
-rm -f /etc/yum.repos.d/rpmfusion-free* /etc/yum.repos.d/rpmfusion-nonfree*
+dnf -y remove rpmfusion-*
 
 dnf clean all

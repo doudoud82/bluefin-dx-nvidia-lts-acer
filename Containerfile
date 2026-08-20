@@ -36,7 +36,7 @@ RUN --mount=type=bind,from=cleanup-script,source=/00-cleanup.sh,target=/ctx/00-c
     --mount=type=tmpfs,dst=/tmp \
     /ctx/00-cleanup.sh
 
-    RUN --mount=type=bind,from=packages-script,source=/10-packages.sh,target=/ctx/10-packages.sh \
+RUN --mount=type=bind,from=packages-script,source=/10-packages.sh,target=/ctx/10-packages.sh \
     --mount=type=cache,dst=/var/cache \
     --mount=type=cache,dst=/var/log \
     --mount=type=tmpfs,dst=/tmp \

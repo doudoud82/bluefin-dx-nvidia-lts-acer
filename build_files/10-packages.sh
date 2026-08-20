@@ -26,6 +26,3 @@ dnf config-manager setopt rpmfusion-free.enabled=0 rpmfusion-free-updates.enable
 dnf config-manager setopt rpmfusion-nonfree.enabled=0 rpmfusion-nonfree-updates.enabled=0
 rm -f /etc/yum.repos.d/rpmfusion-free* /etc/yum.repos.d/rpmfusion-nonfree*
 dnf clean all
-echo "=== 99-config_manager.repo contents ==="
-cat -A /etc/dnf/repos.override.d/99-config_manager.repo || echo "file missing"
-echo "=== end ==="

@@ -132,7 +132,7 @@ enable-adguard-home:
             ipv6.ignore-auto-dns yes \
             ipv6.dns "::1 2606:4700:4700::1111"
     done
-    
+
     sudo rm -f /etc/resolv.conf
     sudo systemctl reload NetworkManager
 

@@ -8,7 +8,7 @@ curl_retry() {
         --retry-delay 2 \
         --retry-max-time 90 \
         --connect-timeout 10 \
-        --max-time 30 \
+        --max-time 180 \
         "$@"
 }
 

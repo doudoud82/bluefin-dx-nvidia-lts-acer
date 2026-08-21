@@ -2,6 +2,16 @@
 
 set -ouex pipefail
 
+curl_retry() {
+    curl -fsSL \
+        --retry 5 \
+        --retry-delay 2 \
+        --retry-max-time 90 \
+        --connect-timeout 10 \
+        --max-time 30 \
+        "$@"
+}
+
 dnf -y remove gnome-extensions-app 
 dnf clean all
 
@@ -22,7 +32,7 @@ EXTENSIONS=(
 mkdir -p /usr/share/gnome-shell/extensions
 for uuid in "${EXTENSIONS[@]}"; do
     pk=$(
-        curl -fsSL "https://extensions.gnome.org/extension-info/?uuid=${uuid}" |
+        curl_retry "https://extensions.gnome.org/extension-info/?uuid=${uuid}" |
         jq -r '
             .shell_version_map
             | to_entries
@@ -37,7 +47,7 @@ for uuid in "${EXTENSIONS[@]}"; do
 }
     zip=$(mktemp)
 
-    curl -fsSL -o "$zip" "https://extensions.gnome.org/download-extension/${uuid}.shell-extension.zip?version_tag=${pk}"
+    curl_retry -o "$zip" "https://extensions.gnome.org/download-extension/${uuid}.shell-extension.zip?version_tag=${pk}"
 
     unzip -oq "$zip" -d "/usr/share/gnome-shell/extensions/${uuid}"
     
@@ -55,10 +65,13 @@ done
 
 tmp=$(mktemp)
 
-curl -fsSL "$(
-    curl -fsSL https://api.github.com/repos/hardpixel/systemd-manager/releases/latest |
+url=$(
+    curl_retry \
+        https://api.github.com/repos/hardpixel/systemd-manager/releases/latest |
     jq -r '.assets[] | select(.name | endswith(".zip")) | .browser_download_url'
-)" -o "$tmp"
+)
+
+curl_retry -o "$tmp" "$url"
 
 unzip -oq "$tmp" -d /usr/share/gnome-shell/extensions/systemd-manager@hardpixel.eu
 

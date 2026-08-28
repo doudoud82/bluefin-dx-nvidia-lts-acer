@@ -30,6 +30,3 @@ mkdir -p /usr/local/share
 ln -s /usr/lib/local-overlay/share/locale /usr/local/share/locale
 
 dnf install -y --no-gpgchecks --setopt=tsflags=nocrypto /ctx/local_rpms/*.rpm /tmp/rpm/*.rpm
-
-sed -i '/^windscribe:/d' /etc/passwd
-sed -i '/^windscribe:/d' /etc/group

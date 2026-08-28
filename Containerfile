@@ -33,12 +33,14 @@ FROM ghcr.io/ublue-os/bluefin-dx-nvidia-open:44
 RUN --mount=type=bind,from=cleanup-script,source=/00-cleanup.sh,target=/ctx/00-cleanup.sh \
     --mount=type=cache,dst=/var/cache \
     --mount=type=cache,dst=/var/log \
+    --mount=type=tmpfs,target=/run \
     --mount=type=tmpfs,dst=/tmp \
     /ctx/00-cleanup.sh
 
 RUN --mount=type=bind,from=packages-script,source=/10-packages.sh,target=/ctx/10-packages.sh \
     --mount=type=cache,dst=/var/cache \
     --mount=type=cache,dst=/var/log \
+    --mount=type=tmpfs,target=/run \
     --mount=type=tmpfs,dst=/tmp \
     /ctx/10-packages.sh
 
@@ -46,18 +48,21 @@ RUN --mount=type=bind,from=local-rpms-script,source=/20-local-rpms.sh,target=/ct
     --mount=type=bind,from=local-rpms,source=/,target=/ctx/local_rpms \
     --mount=type=cache,dst=/var/cache \
     --mount=type=cache,dst=/var/log \
+    --mount=type=tmpfs,target=/run \
     --mount=type=tmpfs,dst=/tmp \
     /ctx/20-local-rpms.sh
 
 RUN --mount=type=bind,from=copr-script,source=/30-copr.sh,target=/ctx/30-copr.sh \
     --mount=type=cache,dst=/var/cache \
     --mount=type=cache,dst=/var/log \
+    --mount=type=tmpfs,target=/run \
     --mount=type=tmpfs,dst=/tmp \
     /ctx/30-copr.sh
 
 RUN --mount=type=bind,from=gnome-script,source=/40-gnome.sh,target=/ctx/40-gnome.sh \
     --mount=type=cache,dst=/var/cache \
     --mount=type=cache,dst=/var/log \
+    --mount=type=tmpfs,target=/run \
     --mount=type=tmpfs,dst=/tmp \
     /ctx/40-gnome.sh
 
@@ -65,6 +70,7 @@ RUN --mount=type=bind,from=system-script,source=/50-system.sh,target=/ctx/50-sys
     --mount=type=bind,from=system-files,source=/,target=/ctx/system_files \
     --mount=type=cache,dst=/var/cache \
     --mount=type=cache,dst=/var/log \
+    --mount=type=tmpfs,target=/run \
     --mount=type=tmpfs,dst=/tmp \
     /ctx/50-system.sh
 
@@ -75,8 +81,21 @@ RUN --mount=type=bind,from=akmods-script,source=/60-akmods.sh,target=/ctx/60-akm
     --mount=type=bind,from=ghcr.io/ublue-os/akmods-nvidia-lts:main-44,source=/rpms,target=/ctx/akmods-nvidia-lts \
     --mount=type=cache,dst=/var/cache \
     --mount=type=cache,dst=/var/log \
+    --mount=type=tmpfs,dst=/tmp \
+    --mount=type=tmpfs,target=/run \
     --mount=type=secret,id=doudou_priv_key \
     DOUDOU_PRIV_KEY="$(cat /run/secrets/doudou_priv_key 2>/dev/null || true)" \
     ATH_PATCH=true /ctx/60-akmods.sh
 
-RUN bootc container lint
+    # Clean up.
+RUN dnf clean all
+RUN rm -rf \
+    /var/cache/dnf \
+    /var/lib/dnf/repos \
+    /var/lib/dnf/system-repo.lock \
+    /var/lib/rpm-state \
+    /var/lib/sbctl/* \
+    /var/log/* \
+    /boot/symvers-*.xz
+
+RUN bootc container lint --no-truncate

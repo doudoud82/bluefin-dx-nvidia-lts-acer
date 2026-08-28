@@ -59,12 +59,27 @@ post-install:
         "Fonts" \
         "System Applications" \
         "System DX Applications" \
+        "Local rpms" \
         "DX Groups")
     grep -qx "CLI tools" <<<"$choices" && ujust install-cli
     grep -qx "Fonts" <<<"$choices" && ujust install-fonts
     grep -qx "System Applications" <<<"$choices" && ujust install-system-applications
     grep -qx "System DX Applications" <<<"$choices" && ujust install-system-dx-applications
+    grep -qx "Local rpms" <<<"$choices" && ujust install-local-rpms
     grep -qx "DX Groups" <<<"$choices" && ujust dx-group
+
+[group("System")]
+[no-exit-message]
+install-local-rpms:
+    #!/usr/bin/env pkexec bash
+    set -euo pipefail
+    shopt -s nullglob
+    rpms=(/rpms/*.rpm)
+    if ((${#rpms[@]} == 0)); then
+        echo "No local RPMs found in /local-rpms."
+        exit 1
+    fi
+    rpm-ostree install --untrusted "${rpms[@]}"
 
 [group("System")]
 [no-exit-message]
@@ -78,7 +93,12 @@ install-lbp6020:
         echo "Canon LBP6020 is not connected."
         exit 0
     }
-
+    # Ensure Canon CAPT is installed
+    rpm -q cndrvcups-capt >/dev/null 2>&1 || {
+        echo "Canon CAPT driver is not installed."
+        echo "Please run: ujust install-local-rpms"
+        exit 1
+    }
     # Remove existing configuration if present
     lpadmin -x LBP6020 2>/dev/null || true
     ccpdadmin -x LBP6020 2>/dev/null || true

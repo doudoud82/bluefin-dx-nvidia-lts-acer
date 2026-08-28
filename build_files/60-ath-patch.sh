@@ -10,7 +10,6 @@ WORKDIR=$(mktemp -d)
 cleanup() {
     rm -rf "${WORKDIR}"
     dnf5 -y remove koji || true
-    dnf5 clean all || true
 }
 trap cleanup EXIT
 

@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# ── 1. Determine whether the base image's kernel matches what akmods built against ──
+# 1. Determine whether the base image's kernel matches what akmods built against ──
 CURRENT_KVER=$(rpm -q --qf '%{VERSION}-%{RELEASE}.%{ARCH}' kernel-core)
 
-TARGET_KERNEL_CORE_RPM=$(ls /ctx/kernel-rpms/kernel-core-*.rpm | head -n1)
+TARGET_KERNEL_CORE_RPM=$(find /ctx/kernel-rpms -maxdepth 1 -name 'kernel-core-*.rpm' -print | head -n1)
 TARGET_KVER=$(rpm -qp --qf '%{VERSION}-%{RELEASE}.%{ARCH}' "${TARGET_KERNEL_CORE_RPM}")
 
 echo "==> Current kernel:  ${CURRENT_KVER}"
@@ -39,7 +39,7 @@ else
     echo "==> Kernel already matches akmods target, skipping kernel switch and v4l2loopback reinstall"
 fi
 
-# ── 2. Downgrade Nvidia: base ships nvidia open driver, 
+# 2. Downgrade Nvidia: base ships nvidia open driver, 
 # we want 580 proprietary from akmods-nvidia-lts.
 echo "==> Removing base's nvidia driver to allow 580 downgrade"
 dnf -y remove --no-autoremove \
@@ -50,6 +50,7 @@ dnf -y remove --no-autoremove \
         || echo "==> Some packages already absent, continuing"
 
 echo "==> Installing Nvidia 580 (LTS) via akmods-nvidia-lts"
+# shellcheck disable=SC1091
 source /ctx/akmods-nvidia-lts/kmods/nvidia-vars
 INSTALLED_KVER=$(rpm -q --qf '%{VERSION}-%{RELEASE}.%{ARCH}' kernel-core)
 if [[ "${INSTALLED_KVER}" != "${KERNEL_VERSION}" ]]; then
@@ -60,7 +61,7 @@ fi
 
 AKMODNV_PATH=/ctx/akmods-nvidia-lts IMAGE_NAME="" /ctx/akmods-nvidia-lts/ublue-os/nvidia-install.sh
 
-# ── 3. ATH patching, now that the final kernel + its -devel/source are in place ──
+# 3. ATH patching, now that the final kernel + its -devel/source are in place ──
 if [[ "${ATH_PATCH:-false}" == "true" ]]; then
     /ctx/60-ath-patch.sh
 fi

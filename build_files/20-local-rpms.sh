@@ -2,8 +2,9 @@
 
 set -ouex pipefail
 
-mkdir -p /var/usrlocal/bin
-mkdir -p /var/opt
-wget https://windscribe.com/install/desktop/linux_rpm_x64 -O /tmp/windscribe.rpm
-dnf install -y --no-gpgchecks --setopt=tsflags=nocrypto /tmp/windscribe.rpm /ctx/local_rpms/*.rpm
-dnf clean all
+mkdir /rpms
+
+wget https://windscribe.com/install/desktop/linux_rpm_x64 -O /rpms/windscribe.rpm
+wget https://www.hamrick.com/files/vuex6498.rpm -O /rpms/vuescan.rpm
+
+cp /ctx/local_rpms/*.rpm /rpms

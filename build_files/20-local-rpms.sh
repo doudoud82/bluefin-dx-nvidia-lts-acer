@@ -4,7 +4,11 @@ set -ouex pipefail
 
 mkdir -p /tmp/rpm
 
-wget https://windscribe.com/install/desktop/linux_rpm_x64 -O /tmp/rpm/windscribe.rpm
+curl -s https://api.github.com/repos/Windscribe/Desktop-App/releases/latest \
+    | grep "browser_download_url.*amd64_fedora.rpm\"" \
+    | grep -v cli \
+    | cut -d '"' -f4 \
+    | xargs -I{} wget {} -O /tmp/rpm/windscribe.rpm
 wget https://www.hamrick.com/files/vuex6498.rpm -O /tmp/rpm/vuescan.rpm
 mkdir -p /var/opt
 # Windscribe

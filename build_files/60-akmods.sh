@@ -48,6 +48,7 @@ dnf -y remove --no-autoremove \
         nvidia-modprobe \
         ublue-os-nvidia-addons \
         || echo "==> Some packages already absent, continuing"
+dnf -y upgrade mesa-dri-drivers
 
 echo "==> Installing Nvidia 580 (LTS) via akmods-nvidia-lts"
 # shellcheck disable=SC1091

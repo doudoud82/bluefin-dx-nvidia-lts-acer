@@ -46,6 +46,7 @@ dnf -y remove --no-autoremove \
         nvidia-driver-common \
         nvidia-libXNVCtrl \
         nvidia-modprobe \
+        mesa-dri-drivers \
         ublue-os-nvidia-addons \
         || echo "==> Some packages already absent, continuing"
 

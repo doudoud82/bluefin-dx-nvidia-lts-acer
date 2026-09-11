@@ -111,27 +111,32 @@ echo "Installing temporary signing key"
 SIGN_KEY="/etc/pki/doudoud82/doudou.priv"
 SIGN_CERT="/etc/pki/doudoud82/doudou.der"
 
+SKIP_SIGN=0
+
 if [[ ! -f "${SIGN_KEY}" ]]; then
     if [[ -z "${DOUDOU_PRIV_KEY:-}" ]]; then
-        echo "ERROR: no local key and DOUDOU_PRIV_KEY is not set"
-        exit 1
+        echo "==> No signing key available (DOUDOU_PRIV_KEY unset, likely a PR/fork build) — skipping module signing"
+        SKIP_SIGN=1
+    else
+        echo "==> Extracting private key from environment"
+        printf '%s\n' "${DOUDOU_PRIV_KEY}" > "${SIGN_KEY}"
+        chmod 600 "${SIGN_KEY}"
     fi
-
-    echo "==> Extracting private key from environment"
-    printf '%s\n' "${DOUDOU_PRIV_KEY}" > "${SIGN_KEY}"
-    chmod 600 "${SIGN_KEY}"
 else
     echo "==> Using existing local private key"
 fi
+if [[ "${SKIP_SIGN}" -eq 0 ]]; then
+    "${KDIR}/scripts/sign-file" \
+        sha256 \
+        "${SIGN_KEY}" \
+        "${SIGN_CERT}" \
+        "${KO}"
 
-"${KDIR}/scripts/sign-file" \
-    sha256 \
-    "${SIGN_KEY}" \
-    "${SIGN_CERT}" \
-    "${KO}"
-
-echo "==> Removing private key"
-rm -f "${SIGN_KEY}"
+    echo "==> Removing private key"
+    rm -f "${SIGN_KEY}"
+else
+    echo "==> Module will be installed unsigned"
+fi
 
 echo "==> Installing patched module into ${DEST}"
 

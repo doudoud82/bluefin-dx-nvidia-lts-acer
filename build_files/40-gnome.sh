@@ -13,7 +13,7 @@ curl_retry() {
 }
 
 dnf -y remove gnome-extensions-app 
-
+dnf -y gnome-browser-connector
 EXTENSIONS=(
     "adw-gtk3-colorizer@NiffirgkcaJ.github.com"
     "Bluetooth-Battery-Meter@maniacx.github.com"

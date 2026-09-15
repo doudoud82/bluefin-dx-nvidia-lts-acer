@@ -19,7 +19,7 @@ EXTENSIONS=(
     "Bluetooth-Battery-Meter@maniacx.github.com"
     "clipboard-indicator@tudmotu.com"
     "extension-list@tu.berry"
-    "foresight@pesader.dev"
+    "foresight-reborn@gabrielpalassi.github.io"
     "legacyschemeautoswitcher@joshimukul29.gmail.com"
     "MaximizeWindowIntoNewWorkspace@kyleross.com"
     "printers@linux-man.org"

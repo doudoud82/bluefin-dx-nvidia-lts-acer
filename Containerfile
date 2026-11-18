@@ -1,3 +1,5 @@
+ARG RELEASE=45
+
 FROM scratch AS cleanup-script
 COPY build_files/00-cleanup.sh /
 
@@ -27,8 +29,6 @@ COPY build_files/60-akmods.sh /
 
 FROM scratch AS ath-patch-script
 COPY build_files/60-ath-patch.sh /
-
-ARG RELEASE=45
 
 FROM ghcr.io/ublue-os/bluefin-dx-nvidia-open:${RELEASE}
 

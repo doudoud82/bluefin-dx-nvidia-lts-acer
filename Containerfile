@@ -32,6 +32,8 @@ COPY build_files/60-ath-patch.sh /
 
 FROM ghcr.io/ublue-os/bluefin-dx-nvidia-open:${RELEASE}
 
+ARG RELEASE
+
 RUN --mount=type=bind,from=cleanup-script,source=/00-cleanup.sh,target=/ctx/00-cleanup.sh \
     --mount=type=cache,dst=/var/cache \
     --mount=type=cache,dst=/var/log \

@@ -1,3 +1,5 @@
+ARG RELEASE=45
+
 FROM scratch AS cleanup-script
 COPY build_files/00-cleanup.sh /
 
@@ -28,7 +30,11 @@ COPY build_files/60-akmods.sh /
 FROM scratch AS ath-patch-script
 COPY build_files/60-ath-patch.sh /
 
-FROM ghcr.io/ublue-os/bluefin-dx-nvidia-open:44
+FROM ghcr.io/ublue-os/akmods-nvidia-lts:main-${RELEASE} AS akmods-nvidia-lts
+
+FROM ghcr.io/ublue-os/akmods:main-${RELEASE} AS akmods-common
+
+FROM ghcr.io/ublue-os/bluefin-dx-nvidia-open:${RELEASE}
 
 RUN --mount=type=bind,from=cleanup-script,source=/00-cleanup.sh,target=/ctx/00-cleanup.sh \
     --mount=type=cache,dst=/var/cache \
@@ -76,9 +82,9 @@ RUN --mount=type=bind,from=system-script,source=/50-system.sh,target=/ctx/50-sys
 
 RUN --mount=type=bind,from=akmods-script,source=/60-akmods.sh,target=/ctx/60-akmods.sh \
     --mount=type=bind,from=ath-patch-script,source=/60-ath-patch.sh,target=/ctx/60-ath-patch.sh \
-    --mount=type=bind,from=ghcr.io/ublue-os/akmods-nvidia-lts:main-44,source=/kernel-rpms,target=/ctx/kernel-rpms \
-    --mount=type=bind,from=ghcr.io/ublue-os/akmods:main-44,source=/rpms,target=/ctx/akmods-common \
-    --mount=type=bind,from=ghcr.io/ublue-os/akmods-nvidia-lts:main-44,source=/rpms,target=/ctx/akmods-nvidia-lts \
+    --mount=type=bind,from=akmods-nvidia-lts,source=/kernel-rpms,target=/ctx/kernel-rpms \
+    --mount=type=bind,from=akmods-common,source=/rpms,target=/ctx/akmods-common \
+    --mount=type=bind,from=akmods-nvidia-lts,source=/rpms,target=/ctx/akmods-nvidia-lts \
     --mount=type=cache,dst=/var/cache \
     --mount=type=cache,dst=/var/log \
     --mount=type=tmpfs,target=/run \
